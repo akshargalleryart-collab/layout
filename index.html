@@ -983,90 +983,144 @@ window.addEventListener('DOMContentLoaded', () => {
   let currentLayout = '1';
   let lastUploadedImage = null;
 
-// layout switch
-document.getElementById('layoutSelect').addEventListener('change', (e) => {
-  const layout = e.target.value;
-  currentLayout = layout;
-
-  const canvas = document.getElementById('posterCanvas');
-  canvas.className = 'poster-canvas rounded-2xl shadow-2xl';
-
-  if (layout !== '1') {
-    canvas.classList.add(`layout-${layout}`);
-  }
-
-  // 🔥 RESET SIDE IMAGE
-  const left = document.getElementById('p_side_image_left');
-  const right = document.getElementById('p_side_image_right');
-
-  left.style.display = 'none';
-  right.style.display = 'none';
-
-  // 🔥 TAMPILKAN KHUSUS LAYOUT 6 & 7
-  if ((layout === '6' || layout === '7') && lastUploadedImage) {
-    left.src = lastUploadedImage;
-    right.src = lastUploadedImage;
-
-    left.style.display = 'block';
-    right.style.display = 'block';
-  }
-});
-
-  // text binding
-  const bind = (inputId, posterId) => {
-    document.getElementById(inputId).addEventListener('input', e=>{
-      document.getElementById(posterId).textContent = e.target.value;
+  // --- Layout switching ---
+    let currentLayout = '1';
+    let lastUploadedImage = null;
+    
+    document.getElementById('layoutSelect').addEventListener('change', (e) => {
+      const layout = e.target.value;
+      currentLayout = layout;
+      const canvas = document.getElementById('posterCanvas');
+      const infoBar = document.getElementById('p_info_bar');
+      const colorInput = document.getElementById('inp_color').value;
+      
+      // Remove all layout classes
+      canvas.classList.remove('layout-1', 'layout-2', 'layout-3', 'layout-4', 'layout-5', 'layout-6', 'layout-7', 'layout-8', 'layout-9');
+      
+      // Hide side images by default
+      document.getElementById('p_side_image_left').style.display = 'none';
+      document.getElementById('p_side_image_center').style.display = 'none';
+      document.getElementById('p_side_image_right').style.display = 'none';
+      
+      // Reset info bar border
+      infoBar.style.borderBottom = 'none';
+      
+      // Add new layout class
+      if (layout !== '1') {
+        canvas.classList.add(`layout-${layout}`);
+      }
+      
+      // If layout 8, apply color to bottom border
+      if (layout === '8') {
+        infoBar.style.borderBottom = `50px solid ${colorInput}`;
+        const anchorLine = document.getElementById('p_layout8_line');
+        if (anchorLine) {
+          anchorLine.style.backgroundColor = colorInput;
+          anchorLine.style.display = 'block';
+        }
+      } else {
+        const anchorLine = document.getElementById('p_layout8_line');
+        if (anchorLine) {
+          anchorLine.style.display = 'none';
+        }
+      }
+      
+      // If layout 6 and visual already uploaded, show left and right images
+      if (layout === '6' && lastUploadedImage) {
+        document.getElementById('p_side_image_left').src = lastUploadedImage;
+        document.getElementById('p_side_image_left').style.display = 'block';
+        document.getElementById('p_side_image_right').src = lastUploadedImage;
+        document.getElementById('p_side_image_right').style.display = 'block';
+      }
+      
+      // If layout 7 and visual already uploaded, show left and right images
+      if (layout === '7' && lastUploadedImage) {
+        document.getElementById('p_side_image_left').src = lastUploadedImage;
+        document.getElementById('p_side_image_left').style.display = 'block';
+        document.getElementById('p_side_image_right').src = lastUploadedImage;
+        document.getElementById('p_side_image_right').style.display = 'block';
+      }
     });
-  };
 
-  bind('inp_sub_judul','p_sub');
-  bind('inp_info','p_info');
-  bind('inp_desc1','p_desc1');
-  bind('inp_desc2','p_desc2');
-  bind('inp_tagline','p_tagline');
+    // --- Live bindings ---
+    const bind = (inputId, posterId, prop = 'textContent') => {
+      document.getElementById(inputId).addEventListener('input', (e) => {
+        document.getElementById(posterId)[prop] = e.target.value;
+      });
+    };
 
-  document.getElementById('inp_judul').addEventListener('input', e=>{
-    document.getElementById('p_headline').textContent = e.target.value;
-  });
-
-  // upload
-  function setupUpload(dropId,fileId,labelId,onLoad){
-    const drop = document.getElementById(dropId);
-    const file = document.getElementById(fileId);
-    const label = document.getElementById(labelId);
-
-    drop.addEventListener('click',()=>file.click());
-
-    file.addEventListener('change', e=>{
-      const f = e.target.files[0];
-      if(!f)return;
-
-      const reader = new FileReader();
-      reader.onload = ev=>{
-        label.textContent = f.name;
-        onLoad(ev.target.result);
-      };
-      reader.readAsDataURL(f);
+    // Bind with special handling for headline (allows HTML)
+    document.getElementById('inp_judul').addEventListener('input', (e) => {
+      document.getElementById('p_headline').textContent = e.target.value;
     });
-  }
 
-  setupUpload('drop_visual','file_visual','visual_label',(dataUrl)=>{
-  lastUploadedImage = dataUrl;
+    bind('inp_sub_judul', 'p_sub');
+    bind('inp_info', 'p_info');
+    bind('inp_desc1', 'p_desc1');
+    bind('inp_desc2', 'p_desc2');
+    bind('inp_tagline', 'p_tagline');
 
-  // hero (layout biasa)
-  document.getElementById('p_hero').innerHTML =
-    `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover">`;
+    // Color
+    document.getElementById('inp_color').addEventListener('input', (e) => {
+      const c = e.target.value;
+      document.getElementById('color_label').textContent = c.toUpperCase();
+      document.getElementById('p_headline').style.color = c;
+      document.getElementById('p_tagline').style.color = c;
+      // Apply to Layout 8 line
+      const infoBar = document.getElementById('p_info_bar');
+      const anchorLine = document.getElementById('p_layout8_line');
+      if (currentLayout === '8') {
+        infoBar.style.borderBottom = `3px solid ${c}`;
+        if (anchorLine) {
+          anchorLine.style.backgroundColor = c;
+        }
+      }
+    });
 
-  // 🔥 isi side image juga
-  document.getElementById('p_side_image_left').src = dataUrl;
-  document.getElementById('p_side_image_right').src = dataUrl;
-});
-  });
+    // File uploads
+    function setupUpload(dropId, fileId, labelId, onLoad) {
+      const drop = document.getElementById(dropId);
+      const file = document.getElementById(fileId);
+      const label = document.getElementById(labelId);
+      drop.addEventListener('click', () => file.click());
+      file.addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          label.textContent = f.name.slice(0, 20);
+          onLoad(ev.target.result);
+        };
+        reader.readAsDataURL(f);
+      });
+    }
 
-  setupUpload('drop_logo','file_logo','logo_label',(dataUrl)=>{
-    document.getElementById('p_brand').innerHTML =
-      `<img src="${dataUrl}" style="height:36px">`;
-  });
+    setupUpload('drop_visual', 'file_visual', 'visual_label', (dataUrl) => {
+      lastUploadedImage = dataUrl;
+      const hero = document.getElementById('p_hero');
+      hero.innerHTML = `<img src="${dataUrl}" data-original-src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;">`;
+      
+      // For Layout 6: populate left and right images
+      if (currentLayout === '6') {
+        document.getElementById('p_side_image_left').src = dataUrl;
+        document.getElementById('p_side_image_left').style.display = 'block';
+        document.getElementById('p_side_image_right').src = dataUrl;
+        document.getElementById('p_side_image_right').style.display = 'block';
+      }
+      
+      // For Layout 7: populate left and right circular images
+      if (currentLayout === '7') {
+        document.getElementById('p_side_image_left').src = dataUrl;
+        document.getElementById('p_side_image_left').style.display = 'block';
+        document.getElementById('p_side_image_right').src = dataUrl;
+        document.getElementById('p_side_image_right').style.display = 'block';
+      }
+    });
+
+    setupUpload('drop_logo', 'file_logo', 'logo_label', (dataUrl) => {
+      const brand = document.getElementById('p_brand');
+      brand.innerHTML = `<img src="${dataUrl}" style="height:36px;width:auto;">`;
+    });
 
   // scale
   function scalePoster() {

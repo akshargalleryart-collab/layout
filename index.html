@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Layout System Generator</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <script>
@@ -877,8 +878,8 @@
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: 2px solid rgba(255,255,255,0.2); border-radius: 6px; }
   </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <style>body { box-sizing: border-box; }</style>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
  </head>
  <body class="h-full bg-neutral-50 text-neutral-900 font-body overflow-auto">
   <div id="app" class="w-full min-h-full"><!-- Header -->
@@ -888,14 +889,7 @@
      <h1 id="app-title" class="font-display text-xl font-bold tracking-tight text-neutral-900">Layout System</h1>
      <p class="text-neutral-400 text-[10px] font-mono mt-1 tracking-wider uppercase whitespace-nowrap">Fixed Composition System</p>
     </div>
-    <div class="flex items-center gap-3">
-
-  <button id="downloadBtn"
-    class="px-3 py-2 rounded-lg text-[11px] font-semibold border border-neutral-300 bg-white hover:border-neutral-400">
-    Download PNG
-  </button>
-
-  <select id="layoutSelect"
+    <div class="flex items-center gap-3"><select id="layoutSelect" class="px-3 py-2 rounded-lg text-[11px] font-semibold border border-neutral-300 bg-white text-neutral-900 hover:border-neutral-400 transition-colors cursor-pointer"> <option value="1">Layout 1</option> <option value="2">Layout 2</option> <option value="3">Layout 3</option> <option value="4">Layout 4</option> <option value="5">Layout 5</option> <option value="6">Layout 6</option> <option value="7">Layout 7</option> <option value="8">Layout 8</option> <option value="9">Layout 9</option> </select>
     </div>
    </div><!-- Input Fields -->
    <div class="px-6 py-6 border-b border-white/5">
@@ -1152,35 +1146,6 @@
 
     // Init icons
     lucide.createIcons();
-    <script>
-document.getElementById('downloadBtn').addEventListener('click', async () => {
-
-  const original = document.getElementById('posterCanvas');
-  const clone = original.cloneNode(true);
-
-  clone.style.width = '1080px';
-  clone.style.height = '1350px';
-  clone.style.transform = 'none';
-  clone.style.position = 'fixed';
-  clone.style.top = '-9999px';
-
-  document.body.appendChild(clone);
-
-  const canvas = await html2canvas(clone, {
-    width: 1080,
-    height: 1350,
-    scale: 2,
-    useCORS: true
-  });
-
-  const link = document.createElement('a');
-  link.download = 'poster.png';
-  link.href = canvas.toDataURL();
-  link.click();
-
-  document.body.removeChild(clone);
-});
-</script>
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e899a802630fd88',t:'MTc3NTU3MDg5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

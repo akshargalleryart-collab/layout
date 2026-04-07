@@ -1054,11 +1054,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.getElementById('posterWrapper');
   const container = document.getElementById('posterContainer');
 
-  const scale = container.offsetWidth / 1080;
+  const containerWidth = container.offsetWidth;
+
+  // 🔥 kasih batas maksimal biar gak kegedean
+  const scale = Math.min(containerWidth / 1080, 0.6);
 
   wrapper.style.transform = `scale(${scale})`;
 }
-
  // download
   document.getElementById('downloadBtn').addEventListener('click', async ()=>{
 

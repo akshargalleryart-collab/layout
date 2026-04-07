@@ -844,22 +844,10 @@
       right: 40px;
     }
     #posterWrapper {
-  transform-origin: top center;
-  width: 1080px;        /* pastikan ini ada */
-}
-
-#posterContainer {
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-/* 🔥 INI YANG PENTING BANGET */
-.poster-wrapper {
-  display: flex;
-  justify-content: center;
-}
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
     .drop-zone {
       border: 2px dashed #e5e7eb;
       transition: all 0.2s;
@@ -949,11 +937,10 @@
      </div>
     </div>
    </div><!-- Live Preview -->
-<div class="py-10 flex justify-center">
-  <div id="posterContainer">
+   <div class="py-10 flex justify-center">
     <div class="poster-wrapper" id="posterWrapper">
-      <div class="poster-canvas rounded-2xl shadow-2xl" id="posterCanvas" style="background:#FFFFFF;"><!-- Headline BG -->
-        <div class="headline-bg" id="p_headline" style="color:#C8553D;">
+     <div class="poster-canvas rounded-2xl shadow-2xl" id="posterCanvas" style="background:#FFFFFF;"><!-- Headline BG -->
+      <div class="headline-bg" id="p_headline" style="color:#C8553D;">
        BEYOND THE EDGE
       </div><!-- Hero Image -->
       <div class="hero-image-area" id="p_hero">
@@ -986,10 +973,10 @@
       </div><!-- Layout 7: Top right line -->
       <div class="top-right-line"></div><!-- Layout 8: Bottom anchor line -->
       <div class="layout-8-anchor-line" id="p_layout8_line"></div>
-     </div> <!-- posterCanvas -->
-</div> <!-- posterWrapper -->
-</div> <!-- posterContainer -->
-</div>
+     </div>
+    </div>
+   </div>
+  </div>
 <script>
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -1058,38 +1045,35 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // scale
- function scalePoster(){
-  const wrapper = document.getElementById('posterWrapper');
-  const container = document.getElementById('posterContainer');
+  function scalePoster(){
+    const wrapper = document.getElementById('posterWrapper');
+    const scale = Math.min((window.innerWidth-48)/1080,0.55);
+    wrapper.style.transform = `scale(${scale})`;
+  }
 
-  const containerWidth = container.offsetWidth;
+  window.addEventListener('resize',scalePoster);
+  scalePoster();
 
-  // 🔥 kasih batas maksimal biar gak kegedean
-  const scale = Math.min(containerWidth / 1080, 0.45);
-
-  wrapper.style.transform = `scale(${scale})`;
-}
- // download
+  // download
   document.getElementById('downloadBtn').addEventListener('click', async ()=>{
-
     const original = document.getElementById('posterCanvas');
+    const clone = original.cloneNode(true);
 
-    // tunggu font & render siap
-    await document.fonts.ready;
+    clone.style.width='1080px';
+    clone.style.height='1350px';
+    clone.style.position='fixed';
+    clone.style.top='-9999px';
 
-    const canvas = await html2canvas(original, {
-      width: 1080,
-      height: 1350,
-      scale: 2,
-      useCORS: true,
-      backgroundColor: null
-    });
+    document.body.appendChild(clone);
+
+    const canvas = await html2canvas(clone,{scale:2});
 
     const link = document.createElement('a');
-    link.download = 'poster.png';
-    link.href = canvas.toDataURL('image/png');
+    link.download='poster.png';
+    link.href=canvas.toDataURL();
     link.click();
 
+    document.body.removeChild(clone);
   });
 
   lucide.createIcons();

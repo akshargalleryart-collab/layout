@@ -1157,76 +1157,49 @@ right.parentElement.style.display = 'block';
   scalePoster();  
   
    // 🔥 DOWNLOAD (taruh DI SINI, bukan di luar)
- const downloadBtn = document.getElementById('downloadBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
 
-if(downloadBtn){
-  downloadBtn.addEventListener('click', async ()=>{
+  if(downloadBtn){
+    downloadBtn.addEventListener('click', async ()=>{
 
-    // 🔥 loading state
-    downloadBtn.innerHTML = `
-      <i data-lucide="loader" class="w-4 h-4 animate-spin"></i>
-      <span>Rendering...</span>
-    `;
-    lucide.createIcons();
+      const canvasEl = document.getElementById('posterCanvas');
+      const wrapper = document.getElementById('posterWrapper');
 
-    const original = document.getElementById('posterCanvas');
-    const renderArea = document.getElementById('renderArea');
+      const prevTransform = wrapper.style.transform;
+      wrapper.style.transform = 'scale(1)';
 
-    // 🔥 CLONE CANVAS (INI KUNCI)
-    const clone = original.cloneNode(true);
+      const images = canvasEl.querySelectorAll('img');
+      await Promise.all([...images].map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = img.onerror = resolve;
+        });
+      }));
 
-    clone.style.transform = 'none';
-    clone.style.width = '1080px';
-    clone.style.height = '1350px';
-
-    renderArea.innerHTML = '';
-    renderArea.appendChild(clone);
-
-    // tunggu render stabil
-    await new Promise(r => setTimeout(r, 100));
-
-    // tunggu semua image siap
-    const images = clone.querySelectorAll('img');
-    await Promise.all([...images].map(img => {
-      if (img.complete) return Promise.resolve();
-      return new Promise(resolve => {
-        img.onload = img.onerror = resolve;
+      const canvas = await html2canvas(canvasEl,{
+        width:1080,
+        height:1350,
+        scale:2,
+        useCORS:true,
+        backgroundColor:'#ffffff',
+        scrollX:0,
+        scrollY:0,
+        windowWidth:1080,
+        windowHeight:1350
       });
-    }));
 
-    // 🔥 render ke canvas (clean)
-    const canvas = await html2canvas(clone,{
-      width:1080,
-      height:1350,
-      scale:2,
-      useCORS:true,
-      backgroundColor:'#ffffff'
+      wrapper.style.transform = prevTransform;
+
+      const link = document.createElement('a');
+      link.download='poster.png';
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+
     });
+  }
 
-    // download
-    const link = document.createElement('a');
-    link.download = 'poster.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+  lucide.createIcons();
 
-    // cleanup
-    renderArea.innerHTML = '';
-
-    // 🔥 balik normal
-    downloadBtn.innerHTML = `
-      <i data-lucide="download" class="w-4 h-4"></i>
-      <span>Download</span>
-    `;
-    lucide.createIcons();
-
-  });
-}
- </script>
-  <div id="renderArea" style="
-   position: fixed;
-   left: -9999px;
-   top: 0;
-   z-index: -1;
- "></div>
-  </body>  
- </html>  
+});
+</script></body>  
+</html>  

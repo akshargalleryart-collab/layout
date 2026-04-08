@@ -1156,52 +1156,50 @@ right.parentElement.style.display = 'block';
   window.addEventListener('resize',scalePoster);  
   scalePoster();  
   
-  // 🔥 DOWNLOAD FINAL FIX (MATCH PREVIEW 1:1)  
-document.getElementById('downloadBtn').addEventListener('click', async ()=>{  
-  
-  const canvasEl = document.getElementById('posterCanvas');  
-  const wrapper = document.getElementById('posterWrapper');  
-  
-  const prevTransform = wrapper.style.transform;  
-  
-  // reset scale  
-  wrapper.style.transform = 'scale(1)';  
-  
-  // ✅ tunggu semua gambar siap (INI YANG BIKIN GAK DISTORSI)  
-  const images = canvasEl.querySelectorAll('img');  
-  await Promise.all([...images].map(img => {  
-    if (img.complete) return Promise.resolve();  
-    return new Promise(resolve => {  
-      img.onload = img.onerror = resolve;  
-    });  
-  }));  
-  
-  const canvas = await html2canvas(canvasEl,{  
-  width:1080,  
-  height:1350,  
-  scale:2,  
-  useCORS:true,  
-  backgroundColor:'#ffffff',  
-  
-  // 🔥 FIX RENDER  
-  scrollX: 0,  
-  scrollY: 0,  
-  windowWidth: 1080,  
-  windowHeight: 1350  
-});  
-  
-  // balikin preview  
-  wrapper.style.transform = prevTransform;  
-  
-  const link = document.createElement('a');  
-  link.download='poster.png';  
-  link.href=canvas.toDataURL('image/png');  
-  link.click();  
-  
-});  
-  
-  lucide.createIcons();  
-  
-});  
+   // 🔥 DOWNLOAD (taruh DI SINI, bukan di luar)
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  if(downloadBtn){
+    downloadBtn.addEventListener('click', async ()=>{
+
+      const canvasEl = document.getElementById('posterCanvas');
+      const wrapper = document.getElementById('posterWrapper');
+
+      const prevTransform = wrapper.style.transform;
+      wrapper.style.transform = 'scale(1)';
+
+      const images = canvasEl.querySelectorAll('img');
+      await Promise.all([...images].map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = img.onerror = resolve;
+        });
+      }));
+
+      const canvas = await html2canvas(canvasEl,{
+        width:1080,
+        height:1350,
+        scale:2,
+        useCORS:true,
+        backgroundColor:'#ffffff',
+        scrollX:0,
+        scrollY:0,
+        windowWidth:1080,
+        windowHeight:1350
+      });
+
+      wrapper.style.transform = prevTransform;
+
+      const link = document.createElement('a');
+      link.download='poster.png';
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+
+    });
+  }
+
+  lucide.createIcons();
+
+});
 </script></body>  
 </html>  

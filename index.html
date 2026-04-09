@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Layout System Generator</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
@@ -908,8 +910,7 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full bg-neutral-50 text-neutral-900 font-body overflow-auto">
-  <div id="app" class="w-full min-h-full">
-   <!-- Header -->
+  <div id="app" class="w-full min-h-full"><!-- Header -->
    <div class="px-6 py-5 border-b border-neutral-200 flex items-center justify-between">
     <div>
      <p class="text-neutral-400 text-[10px] font-mono tracking-wider mb-2">By Akshardesign.id</p>
@@ -919,63 +920,50 @@
    </div><!-- Input Fields -->
    <div class="px-6 py-6 border-b border-white/5">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-[1200px] mx-auto">
-     <div class="col-span-full">
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Judul (Headline)</label> <input type="text" id="inp_judul" value="BEYOND THE EDGE" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
+     <div class="col-span-full"><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Judul (Headline)</label> <input type="text" id="inp_judul" value="BEYOND THE EDGE" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
      </div>
-     <div class="col-span-full">
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Sub Judul</label> <input type="text" id="inp_sub_judul" value="Exploring the invisible boundaries of modern creative culture" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
+     <div class="col-span-full"><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Sub Judul</label> <input type="text" id="inp_sub_judul" value="Exploring the invisible boundaries of modern creative culture" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
      </div>
-     <div class="col-span-full">
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Deskripsi 1</label> <textarea id="inp_desc1" rows="2" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300 resize-none">A visual essay on the tension between minimalism and expression. We strip away the unnecessary to reveal what truly matters in design.</textarea>
+     <div class="col-span-full"><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Deskripsi 1</label> <textarea id="inp_desc1" rows="2" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300 resize-none">A visual essay on the tension between minimalism and expression. We strip away the unnecessary to reveal what truly matters in design.</textarea>
      </div>
-     <div class="col-span-full">
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Deskripsi 2</label> <textarea id="inp_desc2" rows="2" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300 resize-none">Through careful composition and deliberate restraint, each element finds its purpose. Nothing is accidental — every pixel is intentional.</textarea>
+     <div class="col-span-full"><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Deskripsi 2</label> <textarea id="inp_desc2" rows="2" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300 resize-none">Through careful composition and deliberate restraint, each element finds its purpose. Nothing is accidental — every pixel is intentional.</textarea>
      </div>
-     <div>
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Info Tambahan</label> <input type="text" id="inp_info" value="VOL. 03 — 2025 EDITION" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
+     <div><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Info Tambahan</label> <input type="text" id="inp_info" value="VOL. 03 — 2025 EDITION" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
      </div>
-     <div>
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Tagline</label> <input type="text" id="inp_tagline" value="FORM FOLLOWS FEELING" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
+     <div><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Tagline</label> <input type="text" id="inp_tagline" value="FORM FOLLOWS FEELING" class="w-full px-3 py-2 rounded-lg text-xs text-neutral-900 bg-white border border-neutral-300">
      </div>
-     <div>
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Theme Color</label>
-      <div class="flex items-center gap-2">
-       <input type="color" id="inp_color" value="#C8553D" class="w-8 h-8 rounded-lg"> <span id="color_label" class="text-[10px] font-mono text-neutral-500">#C8553D</span>
+     <div><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Theme Color</label>
+      <div class="flex items-center gap-2"><input type="color" id="inp_color" value="#C8553D" class="w-8 h-8 rounded-lg"> <span id="color_label" class="text-[10px] font-mono text-neutral-500">#C8553D</span>
       </div>
      </div>
-     <div>
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Visual Hook</label>
-      <div id="drop_visual" class="drop-zone rounded-lg h-14 flex items-center justify-center gap-2 text-neutral-400 text-[10px] font-mono">
-       <i data-lucide="image" style="width:12px;height:12px"></i> <span id="visual_label">Click to upload</span>
+     <div><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Visual Hook</label>
+      <div id="drop_visual" class="drop-zone rounded-lg h-14 flex items-center justify-center gap-2 text-neutral-400 text-[10px] font-mono"><i data-lucide="image" style="width:12px;height:12px"></i> <span id="visual_label">Click to upload</span>
       </div><input type="file" id="file_visual" accept="image/*" class="hidden">
      </div>
-     <div>
-      <label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Brand Logo</label>
-      <div id="drop_logo" class="drop-zone rounded-lg h-14 flex items-center justify-center gap-2 text-neutral-400 text-[10px] font-mono">
-       <i data-lucide="shapes" style="width:12px;height:12px"></i> <span id="logo_label">Click to upload</span>
+     <div><label class="block text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-1">Brand Logo</label>
+      <div id="drop_logo" class="drop-zone rounded-lg h-14 flex items-center justify-center gap-2 text-neutral-400 text-[10px] font-mono"><i data-lucide="shapes" style="width:12px;height:12px"></i> <span id="logo_label">Click to upload</span>
       </div><input type="file" id="file_logo" accept="image/*" class="hidden">
      </div>
     </div>
    </div><!-- Layout Selector -->
    <div class="px-6 py-4 border-b border-neutral-200 flex items-center justify-between bg-neutral-50">
-    <div class="flex items-center gap-3"><button id="prevBtn" class="p-2 rounded-lg border border-neutral-300 hover:bg-neutral-100 transition-colors"><i data-lucide="chevron-left" style="width:16px;height:16px;"></i></button>
+    <div class="flex items-center gap-3">
+     <button id="prevBtn" class="p-2 rounded-lg border border-neutral-300 hover:bg-neutral-100 transition-colors"><i data-lucide="chevron-left" style="width:16px;height:16px;"></i></button>
      <div class="text-center min-w-20">
       <p id="layoutIndicator" class="text-[12px] font-semibold text-neutral-900">Layout 1</p>
       <p class="text-[10px] text-neutral-400 font-mono">1 / 9</p>
      </div><button id="nextBtn" class="p-2 rounded-lg border border-neutral-300 hover:bg-neutral-100 transition-colors"><i data-lucide="chevron-right" style="width:16px;height:16px;"></i></button>
-    </div><button id="downloadPdfBtn" class="px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-800 transition-colors flex items-center gap-2"><i data-lucide="download" style="width:14px;height:14px;"></i> Download PNG</button>
+    </div><button id="downloadPdfBtn" class="px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-800 transition-colors flex items-center gap-2"><i data-lucide="download" style="width:14px;height:14px;"></i> Download PDF</button>
    </div><!-- Live Preview -->
    <div class="py-10 flex justify-center">
     <div class="poster-wrapper" id="posterWrapper">
-     <div class="poster-canvas rounded-2xl shadow-2xl" id="posterCanvas" style="background:#FFFFFF;">
-      <!-- Headline BG -->
+     <div class="poster-canvas rounded-2xl shadow-2xl" id="posterCanvas" style="background:#FFFFFF;"><!-- Headline BG -->
       <div class="headline-bg" id="p_headline" style="color:#C8553D;">
        BEYOND THE EDGE
       </div><!-- Hero Image -->
       <div class="hero-image-area" id="p_hero">
-       <div class="w-full h-full flex items-center justify-center" style="background: #ffffff;" id="p_hero_placeholder">
-        <div class="text-center text-neutral-300">
-         <i data-lucide="image" style="width:48px;height:48px;margin:0 auto;display:block"></i>
+       <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);" id="p_hero_placeholder">
+        <div class="text-center text-neutral-300"><i data-lucide="image" style="width:48px;height:48px;margin:0 auto;display:block"></i>
          <p class="text-xs font-mono mt-3 tracking-wider uppercase">Upload Visual Hook</p>
         </div>
        </div>
@@ -986,8 +974,7 @@
       <div class="tagline-area" id="p_tagline" style="color:#C8553D;">
        FORM FOLLOWS FEELING
       </div><!-- Info Bar -->
-      <div class="info-bar" id="p_info_bar">
-       <span style="color:#1f2937;" id="p_info">VOL. 03 — 2025 EDITION</span>
+      <div class="info-bar" id="p_info_bar"><span style="color:#1f2937;" id="p_info">VOL. 03 — 2025 EDITION</span>
        <div class="line" id="p_info_line" style="background:#e5e7eb;"></div>
       </div><!-- Two Column Text -->
       <div class="two-col-text">
@@ -999,15 +986,13 @@
        </div>
       </div><!-- Brand Area -->
       <div class="brand-area" id="p_brand">
-       <div id="p_logo_placeholder" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,0.08);">
-        <i data-lucide="hexagon" style="width:18px;height:18px;color:rgba(255,255,255,0.25)"></i>
+       <div id="p_logo_placeholder" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,0.08);"><i data-lucide="hexagon" style="width:18px;height:18px;color:rgba(255,255,255,0.25)"></i>
        </div>
       </div><!-- Layout 7: Top right line -->
       <div class="top-right-line"></div><!-- Layout 8: Bottom anchor line -->
       <div class="layout-8-anchor-line" id="p_layout8_line"></div>
      </div>
-     <div class="swipe-indicator right">
-      <i data-lucide="chevron-right"></i>
+     <div class="swipe-indicator right"><i data-lucide="chevron-right"></i>
      </div>
     </div>
    </div>
@@ -1107,123 +1092,80 @@
       if (currentLayout > 1) updateLayout(currentLayout - 1);
     });
 
-    // Text wrapping utility
-    function wrapText(ctx, text, x, y, maxWidth, lineHeight, align = 'left') {
-      const words = text.split(' ');
-      let line = '';
-      ctx.textAlign = align;
-
-      for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-
-        if (metrics.width > maxWidth && n > 0) {
-          ctx.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += lineHeight;
-        } else {
-          line = testLine;
-        }
-      }
-
-      ctx.fillText(line, x, y);
-    }
-
-    // Helper: Measure text dimensions
-    function measureText(ctx, text, maxWidth, lineHeight) {
-      const words = text.split(' ');
-      let lines = [];
-      let line = '';
-
-      for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-
-        if (metrics.width > maxWidth && n > 0) {
-          lines.push(line.trim());
-          line = words[n] + ' ';
-        } else {
-          line = testLine;
-        }
-      }
-      lines.push(line.trim());
-      return { lines, height: lines.length * lineHeight };
-    }
-
-    // Helper: Draw wrapped text with proper positioning
-    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, align = 'left', startBaseline = true) {
-      const words = text.split(' ');
-      let line = '';
-      let currentY = y;
-
-      ctx.textAlign = align;
-      ctx.textBaseline = startBaseline ? 'top' : 'alphabetic';
-
-      for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-
-        if (metrics.width > maxWidth && n > 0) {
-          ctx.fillText(line.trim(), x, currentY);
-          line = words[n] + ' ';
-          currentY += lineHeight;
-        } else {
-          line = testLine;
-        }
-      }
-
-      if (line.trim()) {
-        ctx.fillText(line.trim(), x, currentY);
-      }
-    }
-
-    // Download PNG using html2canvas
+    // Download PNG
     document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
       const btn = document.getElementById('downloadPdfBtn');
+      const posterCanvas = document.getElementById('posterCanvas');
+      const posterWrapper = document.getElementById('posterWrapper');
+      
       btn.disabled = true;
       btn.innerHTML = '<i data-lucide="loader" style="width:14px;height:14px;"></i> Processing...';
       lucide.createIcons();
       
       try {
-        const posterCanvas = document.getElementById('posterCanvas');
+        // Reset poster to 100% scale temporarily for accurate capture
+        const originalTransform = posterWrapper.style.transform;
+        posterWrapper.style.transform = 'scale(1)';
+        posterWrapper.style.width = '1080px';
+        posterWrapper.style.height = '1350px';
         
-        // Get the current scale of the poster
-        const wrapper = document.getElementById('posterWrapper');
-        const computedStyle = window.getComputedStyle(wrapper);
-        const transform = computedStyle.transform;
-        let scale = 1;
+        // Wait for fonts
+        await document.fonts.ready;
         
-        if (transform && transform !== 'none') {
-          const matrix = transform.match(/^matrix\((.+)\)$/);
-          if (matrix) {
-            const values = matrix[1].split(', ');
-            scale = parseFloat(values[0]);
-          }
-        }
+        // Wait for all images
+        const images = posterCanvas.querySelectorAll('img');
+        await Promise.all([...images].map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise(resolve => {
+            img.onload = img.onerror = resolve;
+          });
+        }));
         
-        // Convert to canvas at original size (1080x1350)
+        // Extra delay for rendering and layout recalculation
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // Capture canvas at actual size
         const canvas = await html2canvas(posterCanvas, {
-          scale: 1 / scale,
-          useCORS: true,
           allowTaint: true,
-          backgroundColor: '#FFFFFF'
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          scale: 1,
+          logging: false,
+          width: 1080,
+          height: 1350,
+          windowHeight: 1350
         });
         
-        // Create download link
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = `poster-layout-${currentLayout}.png`;
-        link.click();
+        // Convert to PNG blob and download
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `poster-layout-${currentLayout}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+          
+          // Restore scale
+          posterWrapper.style.transform = originalTransform;
+          scalePoster();
+          
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="download" style="width:14px;height:14px;"></i> Download PNG';
+          lucide.createIcons();
+        }, 'image/png', 1.0);
         
-        btn.disabled = false;
-        btn.innerHTML = '<i data-lucide="download" style="width:14px;height:14px;"></i> Download PNG';
-        lucide.createIcons();
-
       } catch (error) {
         console.error('Download error:', error);
         btn.disabled = false;
-        btn.innerHTML = '<i data-lucide="download" style="width:14px;height:14px;"></i> Download PNG';
+        btn.innerHTML = '<i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Error';
         lucide.createIcons();
+        
+        setTimeout(() => {
+          btn.innerHTML = '<i data-lucide="download" style="width:14px;height:14px;"></i> Download PNG';
+          lucide.createIcons();
+        }, 2000);
       }
     });
     
@@ -1338,5 +1280,5 @@
     // Init icons
     lucide.createIcons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e9aa9dea5f00807',t:'MTc3NTc0OTc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e9ac20015732c28',t:'MTc3NTc1MDc3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
